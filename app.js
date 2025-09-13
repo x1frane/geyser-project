@@ -98,7 +98,7 @@ function showGameArea() {
 function findMatch() {
   // Подключаемся к WebSocket серверу
   if (!socket) {
-    socket = new WebSocket('https://geyser-project.vercel.app/'); // Замените на адрес вашего сервера
+    socket = new WebSocket('wss://geyser-project.vercel.app/'); // WebSocket соединение с Vercel
     
     socket.onopen = () => {
       console.log('Подключено к серверу');
