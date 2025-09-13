@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="css/style.css">
+        <script src="app.js" defer></script>
+        <title>Мой первый сайт</title>
+    </head>
+    <!-- <body>
+      <div class="card"> 
+         <h2 class="card-subtitle"> Заметки</h2>
+         <input type="text"
+         class="form-control mb-2"
+         placeholder="Текст..."
+         id="input3"/>
+         <button class="button-add" id="add"> Создать напоминание</button>
+         <ul class="list-style" id="list">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+               <span>Название</span>
+               <span> 
+                  <span class="btn btn-small btn-success">&check;</span>
+                  <span class="btn btn-small btn-danger">&times;</span>
+               </span>
+              </li> -->
+         <!-- </ul>
+      </div>
+
+      <div class="card"> 
+         <h2 class="card-subtitle"> Мой первый калькулятор на JS:</h2>
+         <p class="card-text"> Первое число
+            <input type="number"
+            class="form-control mb-2"
+            placeholder="0"
+            id="input1"/>
+         </p>
+         <p class="card-text"> Второе число
+            <input type="number"
+            class="form-control mb-2"
+            placeholder="0"
+            id="input2"/>
+         </p>
+         <div class="butons">
+               <button class="buttonplus" id="plus"> + </button>
+               <button class="buttonminus" id="minus"> - </button>
+               <button class="buttonumnojit" id="umnojit"> * </button>
+               <button class="buttondelit" id="delit"> / </button>
+               <button class="buttonsubmit" id="ravno"> Вычислить </button>
+         </div>
+         <div class="result-card">
+          <h2 class="card-subtitle"> Результат:</h2>
+          <p id="result" class="result-text"> 0 </p>
+         </div>
+
+      </div> -->
+      <div id="main-menu">
+        <h2>Танковая Битва</h2>
+        <button id="find-match-btn">Найти матч</button>
+        <div id="searching-status" style="display: none;">
+          <p>Поиск соперника...</p>
+          <button id="cancel-search-btn">Отменить поиск</button>
+          <button id="test-match-btn" style="margin-top: 10px;">Тестовый матч (для разработки)</button>
+        </div>
+      </div>
+
+      <div id="game-area" style="display: none;">
+        <div id="game-info">
+          <p>Игрок: <span id="player-name">Игрок 1</span></p>
+          <p>Соперник: <span id="opponent-name">Игрок 2</span></p>
+          <p>Ход: <span id="current-turn">Ваш ход</span></p>
+        </div>
+        
+        <div id="battlefield"></div>
+        
+        <div id="placement-menu" style="display: none;">
+          <h3>Расстановка юнитов</h3>
+          <p>Пехота: <span id="infantry-count">10</span></p>
+          <button onclick="selectUnit('infantry')">Выбрать пехоту</button>
+          <p>Танки: <span id="tank-count">3</span></p>
+          <button onclick="selectUnit('tank')">Выбрать танк</button>
+          <button id="ready-btn" style="display: none;">Готов к бою!</button>
+        </div>
+
+        <div id="battle-menu" style="display: none;">
+          <h3>Бой</h3>
+          <button id="end-turn-btn">Завершить ход</button>
+          <div id="shooting-info">
+            <p>Выберите цель для стрельбы</p>
+          </div>
+        </div>
+      </div>
+    </body>
+</html>
