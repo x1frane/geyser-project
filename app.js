@@ -97,37 +97,54 @@ function showGameArea() {
 
 function findMatch() {
   // Подключаемся к WebSocket серверу
-  if (!socket) {
-    socket = new WebSocket('wss://geyser-project.vercel.app/'); // WebSocket соединение с Vercel
-    
-    socket.onopen = () => {
-      console.log('Подключено к серверу');
-      // Отправляем запрос на поиск игры
-      socket.send(JSON.stringify({
-        type: 'find_match'
-      }));
-    };
-    
-    socket.onmessage = (event) => {
-      const message = JSON.parse(event.data);
+  if (!socket || socket.readyState === WebSocket.CLOSED) {
+    try {
+      console.log('Попытка подключения к серверу...');
+      socket = new WebSocket('wss://geyser-project.vercel.app/api/ws'); // WebSocket соединение с Vercel
       
-      switch(message.type) {
-        case 'match_found':
-          // Когда найден противник
-          startMatch(message.playerId, message.opponentId);
-          break;
-        case 'match_error':
-          alert('Ошибка при поиске противника: ' + message.error);
-          cancelSearch();
-          break;
-      }
-    };
-    
-    socket.onerror = (error) => {
-      console.error('Ошибка WebSocket:', error);
-      alert('Ошибка подключения к серверу');
+      socket.onopen = () => {
+        console.log('Подключено к серверу успешно');
+        // Отправляем запрос на поиск игры
+        socket.send(JSON.stringify({
+          type: 'find_match'
+        }));
+      };
+      
+      socket.onmessage = (event) => {
+        console.log('Получено сообщение от сервера:', event.data);
+        const message = JSON.parse(event.data);
+        
+        switch(message.type) {
+          case 'match_found':
+            console.log('Найден противник:', message);
+            startMatch(message.playerId, message.opponentId);
+            break;
+          case 'match_error':
+            console.error('Ошибка матчмейкинга:', message.error);
+            alert('Ошибка при поиске противника: ' + message.error);
+            cancelSearch();
+            break;
+        }
+      };
+      
+      socket.onerror = (error) => {
+        console.error('Ошибка WebSocket:', error);
+        alert('Ошибка подключения к серверу. Проверьте консоль для деталей.');
+        cancelSearch();
+      };
+
+      socket.onclose = (event) => {
+        console.log('WebSocket соединение закрыто:', event.code, event.reason);
+        socket = null;
+      };
+    } catch (error) {
+      console.error('Ошибка при создании WebSocket:', error);
+      alert('Не удалось создать подключение к серверу');
       cancelSearch();
-    };
+      return;
+    }
+  } else {
+    console.log('Соединение уже существует, состояние:', socket.readyState);
   }
   
   document.getElementById('find-match-btn').style.display = 'none';
