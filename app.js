@@ -96,16 +96,53 @@ function showGameArea() {
 }
 
 function findMatch() {
-  // Симуляция поиска матча (в реальной игре здесь будет WebSocket)
+  // Подключаемся к WebSocket серверу
+  if (!socket) {
+    socket = new WebSocket('ws://localhost:3000'); // Замените на адрес вашего сервера
+    
+    socket.onopen = () => {
+      console.log('Подключено к серверу');
+      // Отправляем запрос на поиск игры
+      socket.send(JSON.stringify({
+        type: 'find_match'
+      }));
+    };
+    
+    socket.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      
+      switch(message.type) {
+        case 'match_found':
+          // Когда найден противник
+          startMatch(message.playerId, message.opponentId);
+          break;
+        case 'match_error':
+          alert('Ошибка при поиске противника: ' + message.error);
+          cancelSearch();
+          break;
+      }
+    };
+    
+    socket.onerror = (error) => {
+      console.error('Ошибка WebSocket:', error);
+      alert('Ошибка подключения к серверу');
+      cancelSearch();
+    };
+  }
+  
   document.getElementById('find-match-btn').style.display = 'none';
   document.getElementById('searching-status').style.display = 'block';
   gameState.phase = 'searching';
-  
-  // Пока что просто показываем поиск без автоматического старта
-  // В реальной игре здесь будет подключение к серверу
 }
 
 function cancelSearch() {
+  if (socket) {
+    socket.send(JSON.stringify({
+      type: 'cancel_search'
+    }));
+    socket.close();
+    socket = null;
+  }
   document.getElementById('find-match-btn').style.display = 'block';
   document.getElementById('searching-status').style.display = 'none';
   gameState.phase = 'menu';
